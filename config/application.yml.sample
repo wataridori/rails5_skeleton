@@ -1,4 +1,4 @@
-REPO_URL: "git@github.com:framgia/rails5_sample_app.git"
+REPO_URL: "git@github.com:framgia/rails5_skeleton.git"
 
 EMAIL_USERNAME: "sample@sample.com"
 EMAIL_PASSWORD: "sample1"
