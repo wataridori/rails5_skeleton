@@ -1,7 +1,7 @@
 server {
   listen 80;
-  server_name rails5_sample_app.framgia.vn;
-  root /usr/local/rails_apps/Rails5SampleApp/current/public;
+  server_name rails5_skeleton.framgia.vn;
+  root /usr/local/rails_apps/Rails5Skeleton/current/public;
   client_max_body_size 10M;
   location / {
     try_files $uri @webapp;
