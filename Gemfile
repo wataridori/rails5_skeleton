@@ -29,6 +29,7 @@ gem 'jbuilder', '~> 2.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'nokogiri', '~> 1.6.8'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -70,6 +71,8 @@ group :staging, :production do
   gem 'capistrano-sidekiq'
   gem 'capistrano-passenger'
   gem 'passenger', '>= 5.0.25', require: 'phusion_passenger/rack_handler'
+  gem 'capistrano3-unicorn'
+  gem 'unicorn'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -96,3 +99,4 @@ gem 'state_machines-activerecord'
 gem 'carrierwave'
 gem 'fog'
 gem 'aws-sdk', '~> 1.66.0'
+gem 'capistrano-faster-assets'

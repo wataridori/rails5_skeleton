@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock "3.5.0"
+lock "3.6.1"
 require 'active_support/core_ext/string'
 
 set :application, ENV["REPO_URL"].split("/").last.gsub(".git","").underscore.camelize
@@ -16,14 +16,20 @@ end
 
 set :rvm_ruby_version, "2.3.1"
 set :deploy_to, "/usr/local/rails_apps/#{fetch :application}"
-set :passenger_roles, :app
-set :passenger_restart_runner, :sequence
-set :passenger_restart_wait, 5
-set :passenger_restart_limit, 2
-set :passenger_restart_with_sudo, false
-set :passenger_environment_variables, {}
-set :passenger_restart_command, "passenger-config restart-app"
-set :passenger_restart_options, -> { "#{deploy_to} --ignore-app-not-running" }
+case ENV["WEB_SERVER"]
+when "passenger"
+  set :passenger_roles, :app
+  set :passenger_restart_runner, :sequence
+  set :passenger_restart_wait, 5
+  set :passenger_restart_limit, 2
+  set :passenger_restart_with_sudo, false
+  set :passenger_environment_variables, {}
+  set :passenger_restart_command, "passenger-config restart-app"
+  set :passenger_restart_options, -> { "#{deploy_to} --ignore-app-not-running" }
+when "unicorn"
+  set :unicorn_rack_env, ENV["RAILS_ENV"] || "production"
+  set :unicorn_config_path, "#{current_path}/config/unicorn.rb"
+end
 
 # Default value for linked_dirs is []
 # NOTE: public/uploads IS USED ONLY FOR THE STAGING ENVIRONMENT
@@ -59,7 +65,12 @@ namespace :deploy do
   desc "Restart application"
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      invoke "passenger:restart"
+      case ENV["WEB_SERVER"]
+      when "passenger"
+        invoke "passenger:restart"
+      else
+        invoke "unicorn:restart"
+      end
     end
   end
   after :publishing, :restart
