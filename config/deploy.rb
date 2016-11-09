@@ -74,4 +74,14 @@ namespace :deploy do
     end
   end
   after :publishing, :restart
+
+  desc "update ec2 tags"
+  task :update_ec2_tags do
+    on roles(:app) do
+      within "#{release_path}" do
+        execute :rake, "tag:update_ec2_tags" if fetch(:stage) == :production
+      end
+    end
+  end
+  after :restart, :update_ec2_tags
 end
