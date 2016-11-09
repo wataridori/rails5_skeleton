@@ -14,6 +14,8 @@ module #{(`echo $REPO_URL`.gsub("\n", "").presence || Dir.pwd).split("/").last.g
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.time_zone = 'Asia/Tokyo'
+    config.active_record.default_timezone = :local
+    config.active_record.time_zone_aware_attributes = false
     config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
     config.autoload_paths << Rails.root.join("lib")
 
