@@ -5,4 +5,4 @@ client = AWS::ELB.new region: ENV["AWS_REGION"],
   access_key_id: ENV["AWS_ACCESS_KEY_ID"],
   secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]
 elb = client.load_balancers.find{|lb| lb.name == ENV["AWS_ELB_NAME"]}
-puts elb.instances.map{|i| i.public_ip_address}
+puts elb.instances.map(&:public_ip_address)
